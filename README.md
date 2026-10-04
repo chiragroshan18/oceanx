@@ -285,5 +285,4 @@ Access the Mission Control Dashboard at:
 
 ---
 
-## 📄 License
-ISC License &copy; 2026 Roshan Sharma &bull; OceanX Marine Mission Systems.
+
