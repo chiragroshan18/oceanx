@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OceanX — Scientific Discoveries & Specimen Catalog</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="custom-cursor-dot"></div>
+  <div class="custom-cursor-ring"></div>
+
+  <header class="ocean-header">
+    <a href="index.html" class="ocean-brand">
+      <div class="brand-icon-wrapper">🌊</div>
+      <div class="brand-text">
+        <span class="brand-title">OceanX</span>
+        <span class="brand-tagline">Explore &bull; Monitor &bull; Discover</span>
+      </div>
+    </a>
+
+    <nav class="ocean-nav">
+      <a href="index.html" class="nav-link">🛰️ Mission Control</a>
+      <a href="submersible.html" class="nav-link">🤿 Submersible</a>
+      <a href="exploration.html" class="nav-link">🧭 Exploration</a>
+      <a href="discoveries.html" class="nav-link active">🐠 Discoveries</a>
+      <a href="anomalies.html" class="nav-link">🚨 Anomalies <span class="nav-badge" id="nav-anom-count" style="display:none;">0</span></a>
+      <a href="analytics.html" class="nav-link">📊 Analytics</a>
+      <a href="timeline.html" class="nav-link">📋 Timeline</a>
+      <a href="simulation.html" class="nav-link">🧪 Simulation</a>
+      <a href="reports.html" class="nav-link">📄 Report</a>
+    </nav>
+
+    <div class="header-actions">
+      <div class="live-mission-chip">
+        <span class="pulse-indicator" id="header-pulse"></span>
+        <span id="header-mission-name" style="font-weight: 600; color: #fff;">Abyss Explorer 07</span>
+        <span class="badge badge-exploring" id="header-status-badge">EXPLORING</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="view-header">
+      <div class="view-title-group">
+        <h1>🐠 Scientific Discoveries & Specimen Log</h1>
+        <p>Benthic marine biology, hydrothermal vent fields, and geological formation catalog</p>
+      </div>
+      <div>
+        <button class="btn btn-primary" onclick="openModal('modal-record-discovery')">+ Record Discovery</button>
+      </div>
+    </div>
+
+    <!-- Discovery Dynamic Summary Strip (PRD Requirement 14) -->
+    <div class="telemetry-strip" style="grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));">
+      <div class="telemetry-tile">
+        <div class="tile-label"><span>Total Discoveries</span><span>🐠</span></div>
+        <div class="tile-value-group">
+          <span class="tile-value telemetry-val" id="disc-stat-total">0</span>
+        </div>
+        <div class="tile-meta"><span>Scientific Catalog</span><span>Verified</span></div>
+      </div>
+
+      <div class="telemetry-tile">
+        <div class="tile-label"><span>High / Critical</span><span>⭐</span></div>
+        <div class="tile-value-group">
+          <span class="tile-value telemetry-val" id="disc-stat-high" style="color: #fee440;">0</span>
+        </div>
+        <div class="tile-meta"><span>Priority Findings</span><span>High Impact</span></div>
+      </div>
+
+      <div class="telemetry-tile">
+        <div class="tile-label"><span>Marine Species</span><span>🐙</span></div>
+        <div class="tile-value-group">
+          <span class="tile-value telemetry-val" id="disc-stat-species" style="color: #00f5d4;">0</span>
+        </div>
+        <div class="tile-meta"><span>Biological Specimens</span><span>Deep Fauna</span></div>
+      </div>
+
+      <div class="telemetry-tile">
+        <div class="tile-label"><span>Geological Findings</span><span>🌋</span></div>
+        <div class="tile-value-group">
+          <span class="tile-value telemetry-val" id="disc-stat-geo" style="color: #00bbf9;">0</span>
+        </div>
+        <div class="tile-meta"><span>Lithic Formations</span><span>Basaltic</span></div>
+      </div>
+
+      <div class="telemetry-tile">
+        <div class="tile-label"><span>Deepest Discovery</span><span>⚓</span></div>
+        <div class="tile-value-group">
+          <span class="tile-value telemetry-val" id="disc-stat-deepest">0 m</span>
+        </div>
+        <div class="tile-meta"><span>Abyssal Horizon</span><span>Record</span></div>
+      </div>
+    </div>
+
+    <!-- Filters Strip -->
+    <div class="ocean-card" style="padding: 1rem 1.5rem; margin-bottom: 2rem;">
+      <div style="display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap;">
+        <span style="font-weight: 700; color: #8da4c4; font-size: 0.85rem;">FILTER DISCOVERIES:</span>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <label style="font-size: 0.8rem; color: #537095;">Type:</label>
+          <select id="filter-disc-type" class="form-control" style="width: auto; padding: 0.4rem 0.8rem;">
+            <option value="">All Classifications</option>
+            <option value="Marine Species">Marine Species</option>
+            <option value="Coral Formation">Coral Formation</option>
+            <option value="Geological Formation">Geological Formation</option>
+            <option value="Hydrothermal Vent">Hydrothermal Vent</option>
+            <option value="Underwater Structure">Underwater Structure</option>
+            <option value="Sediment Sample">Sediment Sample</option>
+            <option value="Unknown Observation">Unknown Observation</option>
+          </select>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <label style="font-size: 0.8rem; color: #537095;">Importance:</label>
+          <select id="filter-disc-imp" class="form-control" style="width: auto; padding: 0.4rem 0.8rem;">
+            <option value="">All Priorities</option>
+            <option value="LOW">LOW</option>
+            <option value="MEDIUM">MEDIUM</option>
+            <option value="HIGH">HIGH</option>
+            <option value="CRITICAL">CRITICAL</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Discoveries Grid -->
+    <div class="grid-dashboard" id="discoveries-grid"></div>
+  </main>
+
+  <!-- Modal: Record New Discovery -->
+  <div class="modal-backdrop" id="modal-record-discovery">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('modal-record-discovery')">&times;</button>
+      <h2 style="color: #00f5d4; font-size: 1.4rem; margin-bottom: 0.5rem;">Log Scientific Discovery</h2>
+      <p style="color: #8da4c4; font-size: 0.85rem; margin-bottom: 1.5rem;">Enter specimen telemetry, optical observations, and scientific importance rating.</p>
+
+      <form onsubmit="handleRecordDiscoverySubmit(event)">
+        <div class="form-group">
+          <label class="form-label">Specimen / Formation Name *</label>
+          <input type="text" name="name" class="form-control" required placeholder="e.g. Abyssal Bioluminescent Siphonophore" value="Bioluminescent Bathypelagic Jelly">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label">Classification Type *</label>
+            <select name="type" class="form-control" required>
+              <option value="Marine Species" selected>Marine Species</option>
+              <option value="Coral Formation">Coral Formation</option>
+              <option value="Geological Formation">Geological Formation</option>
+              <option value="Hydrothermal Vent">Hydrothermal Vent</option>
+              <option value="Underwater Structure">Underwater Structure</option>
+              <option value="Sediment Sample">Sediment Sample</option>
+              <option value="Unknown Observation">Unknown Observation</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Discovery Depth (m) *</label>
+            <input type="number" name="depth" class="form-control" required value="4310" min="0" max="11000">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label">Scientific Importance *</label>
+            <select name="importance" class="form-control" required>
+              <option value="LOW">LOW</option>
+              <option value="MEDIUM">MEDIUM</option>
+              <option value="HIGH" selected>HIGH</option>
+              <option value="CRITICAL">CRITICAL</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Location Marker / Sector</label>
+            <input type="text" name="locationMarker" class="form-control" placeholder="e.g. Sector Beta-9" value="Sector Charlie-04">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Description & Observations *</label>
+          <textarea name="description" class="form-control" required placeholder="Detailed visual, morphological, or acoustic observations...">Pulsing azure bioluminescent bell observed drifting at 4,310m depth. High specimen interest for biochemical luminescent assay.</textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.8rem; margin-top: 1.5rem;">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-record-discovery')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Catalog Discovery</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="ocean-footer">
+    <div class="container footer-inner" style="justify-content: center; text-align: center;">
+      <div>
+        <strong>OceanX</strong> &mdash; Smart Ocean Exploration &amp; Marine Mission Monitoring System
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/bubbles.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/discoveries.js"></script>
+</body>
+</html>

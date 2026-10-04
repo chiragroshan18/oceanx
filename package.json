@@ -1,0 +1,24 @@
+{
+  "name": "oceanx",
+  "version": "1.0.0",
+  "description": "Smart Ocean Exploration & Marine Mission Monitoring System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node tests/test-suite.js",
+    "test:all": "node tests/test-suite.js && node tests/comprehensive-test.js"
+  },
+  "keywords": [
+    "ocean-exploration",
+    "mission-monitoring",
+    "submersible-telemetry",
+    "marine-science",
+    "anomaly-detection",
+    "cloud-ready"
+  ],
+  "author": "Roshan Sharma",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
